@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Prova 2</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <div class="container">
+    <div class="topo">
+      <span class="titulo">Editando</span>
+      <a href="/" class="botao-topo">CANCELAR</a>
+    </div>
+
+    <div class="painel-edit">
+      <p>Editando notas</p>
+
+      <form action="/saveNote" method="post" th:object="${aluno}">
+        <div class="grid-campos">
+          <div class="campo">Nome</div>
+          <input id="nome" class="campo nome" type="text" th:field="*{nome}">
+
+          <div class="campo">Matrícula</div>
+          <input id="matricula" class="campo matr" type="text" th:field="*{matricula}">
+
+          <div class="campo">Turma</div>
+          <input id="turma" class="campo nota" type="number" th:field="*{turma}">
+
+          <div class="campo">Nota</div>
+          <input id="nota" class="campo nota" type="number" th:field="*{nota}">
+        </div>
+
+        <!-- Campo oculto para o ID do aluno -->
+        <input type="hidden" id="alunoId" th:value="*{id}">
+
+        <button type="submit" class="botao-topo">EFETIVAR</button>
+        <button type="button" class="botao-topo" onclick="removeAluno()">REMOVER</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function removeAluno() {
+      const alunoId = document.getElementById('alunoId').value;
+      fetch('/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ id: alunoId })
+      }).then(response => {
+        if (response.ok) {
+          window.location.href = '/';
+        } else {
+          alert('Erro ao remover aluno');
+        }
+      });
+    }
+  </script>
+</body>
+</html>
